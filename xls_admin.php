@@ -4337,7 +4337,10 @@
 			$this->add_config_key('DEBUG_SHIPPING' , "INSERT INTO `xlsws_configuration` VALUES (NULL, 'Debug Shipping Methods', 'DEBUG_SHIPPING', '', 'If selected, WS log all activity for shipping methods.', 1, 19, NOW(), NOW(), 'BOOL');" , '2.1.7');
 			$this->add_config_key('DEBUG_RESET' , "INSERT INTO `xlsws_configuration` VALUES (NULL, 'Reset Without Flush', 'DEBUG_RESET', '', 'If selected, WS will not perform a flush on content tables when doing a Reset Store Products.', 1, 20, NOW(), NOW(), 'BOOL');" , '2.1.7');
 			$this->add_config_key('DEBUG_DELETE_DUPES' , "INSERT INTO `xlsws_configuration` VALUES (NULL, 'Uploader should delete duplicates', 'DEBUG_DELETE_DUPES', '', 'If selected, a product which is uploading will replace any duplicate product codes.', 1, 21, NOW(), NOW(), 'BOOL');" , '2.1.7');
-									
+			
+			 $this->add_config_key('EMAIL_SMTP_AUTH_PLAIN' , 
+                "INSERT INTO `xlsws_configuration` VALUES (NULL, 'Force AUTH PLAIN Authentication', 
+                'EMAIL_SMTP_AUTH_PLAIN', '0', 'Force plain text password in rare circumstances', 5, 9, NOW(), NOW(), 'BOOL');");						
 
 			$this->arrMPnls['UpgradeWS']->Visible = true;
 			$this->arrMPnls['UpgradeWS']->Refresh();			
