@@ -87,13 +87,14 @@ class authorize_dot_net_aim extends credit_card {
 		$ret['live'] = new XLSListBox($objParent);
 		$ret['live']->Name = _sp('Deployment Mode');
 		$ret['live']->AddItem('live' , 'live');
-		$ret['live']->AddItem('sandbox' , 'sandbox');
-		//$ret['live']->AddItem('dev' , 'dev'); //See note in process() statement about this option
+		$ret['live']->AddItem('sandbox' , 'test');
+		$ret['live']->ToolTip = "To use (TEST MODE) in your regular account, leave this as Live and instead set Test Mode in your Authorize.net account settings on their site. Sandbox should only be used with Authorize.net Sandbox testing servers.";
 
-		$ret['cvv'] = new XLSListBox($objParent);
-		$ret['cvv']->Name = _sp('Pass CVV to Processor');
-		$ret['cvv']->AddItem('Off' , 0);
-		$ret['cvv']->AddItem('On' , 1);
+		$ret['ccv'] = new XLSListBox($objParent);
+		$ret['ccv']->Name = _sp('Use CCV Credit Card Verification');
+		$ret['ccv']->AddItem('Off' , 0);
+		$ret['ccv']->AddItem('On' , 1);
+		$ret['ccv']->ToolTip = "If you have enabled CCV/CVC (Enhanced CCV Handling Filter) in your Authorize.net account, turn this on. Otherwise this should remain off.";
 		
 		$ret['specialcode'] = new XLSTextBox($objParent);
 		$ret['specialcode']->Name = _sp('Special Transaction Code (if any)');
@@ -146,7 +147,7 @@ class authorize_dot_net_aim extends credit_card {
 		 * chosen through the Web Admin panel.
 		 *
 		 */
-		if($config['live'] == 'sandbox')
+		if($config['live'] == 'test')
 			$auth_net_url = "https://test.authorize.net/gateway/transact.dll";
 		else
 			$auth_net_url = "https://secure.authorize.net/gateway/transact.dll";
@@ -188,7 +189,7 @@ class authorize_dot_net_aim extends credit_card {
 			"x_freight"				=> $cart->ShippingSell,
 		);
 
-		if($config['cvv'] == '1')
+		if($config['ccv'] == '1')
 			$authnet_values['x_card_code'] = $fields['ccsec']->Text;
 
 
