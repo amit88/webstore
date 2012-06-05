@@ -359,19 +359,24 @@
 
             if (!$blbRawImage) {
                 QApplication::Log(E_ERROR, 'uploader',
-                    'Did not receive image data for ' . $intRowid, __FUNCTION__);                return self::UNKNOWN_ERROR;
+                    'Did not receive image data for ' . $intRowid, __FUNCTION__);
+                return self::UNKNOWN_ERROR;
             }    
-
+			$blbImage = imagecreatefromstring($blbRawImage);
+			
             if (is_null($objProduct))
                 $objProduct = Product::Load($intRowid);
 
             if (!$objProduct) {
                 QApplication::Log(E_ERROR, 'uploader',
-                    "Product Id does not exist $intRowid", __FUNCTION__);
+                    'Save Image for product ' . $intRowid . " - Product Not Found", __FUNCTION__);
+                    $fp = fopen('photos/orphaned_'.$intRowid.'.jpg', 'wb');
+					fwrite($fp, $rawImage);
+					fclose($fp);
                 return self::UNKNOWN_ERROR;
-            }    
+            } else @unlink('photos/orphaned_'.$intRowid.'.jpg'); //As orphaned photos are fixed, clean up    
 
-            $blbImage = imagecreatefromstring($blbRawImage);
+            
             $objImage = false;
 
             if ($objProduct->ImageId)
@@ -658,7 +663,7 @@ EOS;
             
             if(!$product){
                 QApplication::Log(E_WARNING, 'uploader', 
-                    "Product ID does not exist $intRowid", __FUNCTION__);
+                    'Add Addl Image for product ' . $intRowid . ' - Product Not Found', __FUNCTION__);
                 return self::UNKNOWN_ERROR;
             }
                 
@@ -706,7 +711,7 @@ EOS;
 
             if (!$objProduct) {
                 QApplication::Log(E_ERROR, 'uploader',
-                    'Product Id does not exist ' . $intRowid, __FUNCTION__);
+                    'Add Addl Image at index for product ' . $intRowid . " - Product Not Found", __FUNCTION__);
                 return self::UNKNOWN_ERROR;
             }
 
@@ -803,7 +808,7 @@ EOS;
             $objProduct = Product::Load($intRowid); 
             if (!$objProduct) {
                 QApplication::Log(E_WARNING, 'uploader', 
-                    'Product id does not exist ' . $intRowid, __FUNCTION__);
+                    'Remove Image for product ' . $intRowid . " - Product Not Found", __FUNCTION__);
                 return self::UNKNOWN_ERROR;
             }
                 
